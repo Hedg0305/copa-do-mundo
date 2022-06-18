@@ -95,7 +95,6 @@ export default Competition;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { edition, team } = params as unknown as ServerSideProps;
   const [year, hostCountry] = edition.split("-");
-  console.log(year);
 
   return {
     props: {
