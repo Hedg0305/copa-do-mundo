@@ -20,7 +20,7 @@ const Home = ({ editions }: HomeProps) => {
           <Heading as='h1' size='2xl' mb='10'>
             Gerenciador de copas do mundo
           </Heading>
-          <Grid gap={6} templateColumns='repeat(4, 1fr)'>
+          <Flex gap='20px'>
             {editions.map((edition) => (
               <Edition
                 key={edition.id}
@@ -29,7 +29,7 @@ const Home = ({ editions }: HomeProps) => {
                 year={edition.year}
               />
             ))}
-          </Grid>
+          </Flex>
         </VStack>
       </Center>
     </Box>
@@ -56,11 +56,6 @@ export const getStaticProps: GetStaticProps = async () => {
           id: 3,
           year: 2014,
           country: "Brasil",
-        },
-        {
-          id: 4,
-          year: 2010,
-          country: "Africa do Sul",
         },
       ],
     },
