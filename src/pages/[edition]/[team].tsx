@@ -5,6 +5,7 @@ import Player, { PlayerProps } from "../../components/PlayerCard";
 import TechnicalComittee, {
   ComitteeProps,
 } from "../../components/TechnicalComittee";
+import AddPersonForm from "../../components/AddPersonForm";
 
 interface ServerSideProps {
   edition: string;
@@ -33,9 +34,13 @@ const Competition = ({
           <Heading as='h1' size='2xl' mb='10'>
             Copa do mundo - {hostCountry} - {year}
           </Heading>
+
           <Heading as='h2' size='lg'>
             {team}
           </Heading>
+
+          <AddPersonForm />
+
           <Heading as='h3' size='md'>
             Jogadores
           </Heading>
