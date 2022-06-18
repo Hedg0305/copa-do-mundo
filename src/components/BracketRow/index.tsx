@@ -15,8 +15,8 @@ const BracketRow = ({ index }: BracketRowProps) => {
   return (
     <Tbody
       bgColor={index % 2 == 0 ? "gray.100" : "gray.200"}
-      borderLeft={index < 2 ? "2px" : "0px"}
-      borderLeftColor={index < 2 ? "green.400" : ""}
+      borderLeft={index < 2 ? "2px" : "2px"}
+      borderLeftColor={index < 2 ? "green.400" : "red.400"}
       _hover={{ bgColor: "gray.300" }}
       borderBottom={index == 1 ? "2px" : "0px"}
       borderBottomStyle={index == 1 ? "dashed" : "dashed"}
