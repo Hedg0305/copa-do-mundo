@@ -19,24 +19,28 @@ interface PlayerProps {
 
 const Player = ({ country, passport, year, name, age, birthdate, position, stats }: PlayerProps) => {
   return (
-    <Box p="15px" w='300px' borderWidth='1px' borderRadius='lg' overflow='hidden' bg="white">
-      <Box>
+    <Box p="15px" w='350px' borderWidth='1px' borderRadius='lg' overflow='hidden' bg="white" fontSize="18px">
+      <Box display="flex" alignItems="center" justifyContent="space-between">
         <Avatar name={name} />
+        <Box
+          fontWeight='Bold'
+          as='h2'
+          lineHeight='tight'
+          color="blackAlpha.700"
+        >
+          {name}
+          <Box as="h3">
+            {age} anos
+          </Box>
+        </Box>
+        <Box display="flex" justifyContent="center" flexDirection="column" color="blackAlpha.800">
+          {country}
+          <div>
+            Posição: {position}
+          </div>
+        </Box>
       </Box>
-      <Box
-        mt='1'
-        fontWeight='Bold'
-        as='h2'
-        lineHeight='tight'
-        noOfLines={1}
-      >
-        {name} - {age} - {birthdate}
-      </Box>
-      <Box>
-        {country} - {year}
-      </Box>
-      <Box display='flex'>
-        Posição: {position}
+      <Box display='flex' justifyContent="space-between" mt="15px">
         <List>
           <ListItem>
             {stats.goals} Gols
@@ -44,15 +48,17 @@ const Player = ({ country, passport, year, name, age, birthdate, position, stats
           <ListItem>
             {stats.assists} Assistências
           </ListItem>
-          <ListItem>
+        </List>
+        <List>
+          <ListItem color="yellow.400">
             {stats.yellowCards} Cartões amarelos
           </ListItem>
-          <ListItem>
+          <ListItem color="red">
             {stats.redCards} Cartões vermelhos
           </ListItem>
         </List>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
