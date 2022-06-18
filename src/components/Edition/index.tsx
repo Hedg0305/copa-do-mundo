@@ -10,7 +10,7 @@ interface EditionProps {
 
 const Edition = ({ country, id, year }: EditionProps) => {
   return (
-    <Link href={String(year)}>
+    <Link href={`${String(year)}-${country}`}>
       <VStack
         cursor='pointer'
         _hover={{
