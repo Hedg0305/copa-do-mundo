@@ -1,10 +1,22 @@
-import { Table, TableContainer, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Table,
+  TableCaption,
+  TableContainer,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import React from "react";
 import BracketRow from "../BracketRow";
 
-const Bracket = () => {
+interface BracketProps {
+  group: string;
+}
+
+const Bracket = ({ group }: BracketProps) => {
   return (
     <TableContainer>
+      {group}
       <Table
         variant='unstyled'
         borderWidth='1px'
