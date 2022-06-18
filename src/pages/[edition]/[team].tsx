@@ -1,8 +1,10 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { Box, Center, Grid, Heading, VStack } from "@chakra-ui/react";
-import Player from "../../components/PlayerCard";
-import TechnicalComittee from "../../components/TechnicalComittee"
+import Player, { PlayerProps } from "../../components/PlayerCard";
+import TechnicalComittee, {
+  ComitteeProps,
+} from "../../components/TechnicalComittee";
 
 interface ServerSideProps {
   edition: string;
@@ -13,37 +15,19 @@ interface PageProps {
   hostCountry: string;
   year: number;
   team: string;
-  players: Player[];
-  technicalComittee: Comittee[];
-
-}
-interface Comittee {
-  passport: string;
-  name: string;
-  age: number;
-  birthdate: string;
-  role: string;
+  players: PlayerProps[];
+  technicalComittee: ComitteeProps[];
 }
 
-interface Player {
-  passport: string;
-  birthdate: string;
-  name: string;
-  age: number;
-  position: string;
-  stats: {
-    defenses?: number;
-    sufferedGoals?: number;
-    goals?: number;
-    assists?: number;
-    yellowCards: number;
-    redCards: number;
-  }
-}
-
-const Competition = ({ hostCountry, year, team, technicalComittee, players }: PageProps) => {
+const Competition = ({
+  hostCountry,
+  year,
+  team,
+  technicalComittee,
+  players,
+}: PageProps) => {
   return (
-    <Box bgColor='gray.400' h="100vh">
+    <Box bgColor='gray.400' h='100vh'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
@@ -55,7 +39,7 @@ const Competition = ({ hostCountry, year, team, technicalComittee, players }: Pa
           <Heading as='h3' size='md'>
             Jogadores
           </Heading>
-          <Grid templateColumns='repeat(2, 1fr)' gap="35px">
+          <Grid templateColumns='repeat(2, 1fr)' gap='35px'>
             {players.map((player) => (
               <Player
                 key={player.passport}
@@ -66,13 +50,12 @@ const Competition = ({ hostCountry, year, team, technicalComittee, players }: Pa
                 position={player.position}
                 stats={player.stats}
               />
-            )
-            )}
+            ))}
           </Grid>
           <Heading as='h3' size='md'>
             Comissão Técnica
           </Heading>
-          <Grid templateColumns='repeat(2, 1fr)' gap="35px">
+          <Grid templateColumns='repeat(2, 1fr)' gap='35px'>
             {technicalComittee.map((comittee) => (
               <TechnicalComittee
                 passport={comittee.passport}
@@ -101,13 +84,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       year,
       hostCountry,
       team,
-      technicalComittee: [{
-        passport: "56467987451",
-        name: "Hernan Gomez",
-        age: 45,
-        birthdate: "12/06/1985",
-        role: "Técnico"
-      }],
+      technicalComittee: [
+        {
+          passport: "56467987451",
+          name: "Hernan Gomez",
+          age: 45,
+          birthdate: "12/06/1985",
+          role: "Técnico",
+        },
+      ],
       players: [
         {
           passport: "231654564",
@@ -120,7 +105,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
             assists: 5,
             yellowCards: 1,
             redCards: 0,
-          }
+          },
         },
         {
           passport: "32132131",
@@ -133,9 +118,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
             sufferedGoals: 5,
             yellowCards: 0,
             redCards: 0,
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
   };
 };
+
