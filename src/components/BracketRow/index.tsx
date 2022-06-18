@@ -15,7 +15,6 @@ interface BracketRowProps {
 
 const BracketRow = ({ index, country }: BracketRowProps) => {
   const router = useRouter();
-  console.log(router.asPath);
 
   return (
     <Link href={`${router.asPath}/${country}`}>

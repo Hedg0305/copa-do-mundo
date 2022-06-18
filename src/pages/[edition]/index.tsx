@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { GetServerSideProps, GetStaticProps } from "next";
-import { Box, Center, Flex, Heading, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
+  Grid,
+  Heading,
+  Input,
+  Select,
+  VStack,
+} from "@chakra-ui/react";
 import Bracket from "../../components/Bracket";
 
 interface ServerSideProps {
@@ -13,26 +25,63 @@ interface PageProps {
 }
 
 const Competition = ({ country, year }: PageProps) => {
+  const [countryName, setCountryName] = useState("");
+  const [group, setGroup] = useState("");
+
+  const handleInputChange = (e: any) => setCountryName(e.target.value);
+
+  const handleSubmit = () => {
+    console.log("Country: ", countryName);
+    console.log("Group: ", group);
+  };
+
   return (
-    <Box bgColor='gray.400'>
+    <Box minH='100vh' bgColor='gray.400'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
             Copa do mundo - {country} - {year}
           </Heading>
 
-          <Flex
-            wrap='wrap'
-            alignItems='center'
-            justifyContent='center'
-            gap='10px'
-          >
+          <FormControl display='flex' alignItems='flex-end' gap='20px'>
+            <Box>
+              <FormLabel htmlFor='country'>Country name</FormLabel>
+              <Input
+                id='country'
+                type='country'
+                value={countryName}
+                onChange={handleInputChange}
+              />
+            </Box>
+            <Box>
+              <FormLabel htmlFor='selectGroup'>Select a group</FormLabel>
+              <Select
+                placeholder='Select option'
+                id='selectGroup'
+                onChange={(e) => setGroup(e.target.value)}
+              >
+                {["a", "b", "c", "d"].map((letter) => (
+                  <option key={letter} value={letter}>
+                    {letter}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+            <Button colorScheme='teal' type='submit' onClick={handleSubmit}>
+              Submit
+            </Button>
+          </FormControl>
+
+          <Grid gridTemplateColumns='repeat(2, 1fr)' gap='25px'>
             <Bracket group='Grupo A' />
             <Bracket group='Grupo A' />
             <Bracket group='Grupo A' />
             <Bracket group='Grupo A' />
             <Bracket group='Grupo A' />
-          </Flex>
+            <Bracket group='Grupo A' />
+            <Bracket group='Grupo A' />
+            <Bracket group='Grupo A' />
+          </Grid>
         </VStack>
       </Center>
     </Box>
