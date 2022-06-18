@@ -8,11 +8,9 @@ const blank = () => {
       <Center h='100vh'>
         <Player
           passport="32132131"
-          year={2022}
-          country="Brasil"
+          birthdate="12/04/1995"
           name="Neymar Jr."
           age={30}
-          birthdate="05/02/1992"
           position="PE"
           stats={
             {

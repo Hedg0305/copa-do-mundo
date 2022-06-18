@@ -3,11 +3,9 @@ import React from "react";
 
 interface PlayerProps {
   passport: string;
-  year: number;
-  country: string;
+  birthdate: string;
   name: string;
   age: number;
-  birthdate: string;
   position: string;
   stats: {
     defenses?: number;
@@ -19,9 +17,9 @@ interface PlayerProps {
   }
 }
 
-const Player = ({ country, passport, year, name, age, birthdate, position, stats }: PlayerProps) => {
+const Player = ({ birthdate, passport, name, age, position, stats }: PlayerProps) => {
   return (
-    <Box p="15px" w='350px' borderWidth='1px' borderRadius='lg' overflow='hidden' bg="white" fontSize="18px">
+    <Box p="15px" w='400px' borderWidth='1px' borderRadius='lg' overflow='hidden' bg="whiteAlpha.700" fontSize="18px" borderColor='gray.300'>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Avatar name={name} />
         <Box
@@ -31,12 +29,12 @@ const Player = ({ country, passport, year, name, age, birthdate, position, stats
           color="blackAlpha.700"
         >
           {name}
-          <Box as="h3">
+          <Box>
             {age} anos
           </Box>
         </Box>
         <Box display="flex" justifyContent="center" flexDirection="column" color="blackAlpha.800">
-          {country}
+          {birthdate}
           <div>
             Posição: {position}
           </div>
@@ -65,7 +63,7 @@ const Player = ({ country, passport, year, name, age, birthdate, position, stats
 
         }
         <List>
-          <ListItem color="yellow.400">
+          <ListItem color="yellow.500">
             {stats.yellowCards} Cartões amarelos
           </ListItem>
           <ListItem color="red">
