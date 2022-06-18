@@ -10,8 +10,10 @@ interface PlayerProps {
   birthdate: string;
   position: string;
   stats: {
-    goals: number;
-    assists: number;
+    defenses?: number;
+    sufferedGoals?: number;
+    goals?: number;
+    assists?: number;
     yellowCards: number;
     redCards: number;
   }
@@ -41,14 +43,27 @@ const Player = ({ country, passport, year, name, age, birthdate, position, stats
         </Box>
       </Box>
       <Box display='flex' justifyContent="space-between" mt="15px">
-        <List>
-          <ListItem>
-            {stats.goals} Gols
-          </ListItem>
-          <ListItem>
-            {stats.assists} Assistências
-          </ListItem>
-        </List>
+        {position !== "GOL" ?
+          (<List>
+            <ListItem>
+              {stats?.goals} Gols
+            </ListItem>
+            <ListItem>
+              {stats?.assists} Assistências
+            </ListItem>
+          </List>) :
+          (
+            <List>
+              <ListItem>
+                {stats?.defenses} Defesas
+              </ListItem>
+              <ListItem>
+                {stats?.sufferedGoals} Gols sofridos
+              </ListItem>
+            </List>
+          )
+
+        }
         <List>
           <ListItem color="yellow.400">
             {stats.yellowCards} Cartões amarelos
