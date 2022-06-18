@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps, GetStaticProps } from "next";
 import { Box, Center, Flex, Heading, VStack } from "@chakra-ui/react";
-import Bracket from "../components/Bracket";
+import Bracket from "../../components/Bracket";
 
 interface ServerSideProps {
   edition: string;
