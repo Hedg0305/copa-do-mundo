@@ -2,7 +2,6 @@ import { Avatar, Box } from "@chakra-ui/react";
 import React from "react";
 
 export interface ComitteeProps {
-  passport: string;
   name: string;
   age: number;
   birthdate: string;
@@ -11,7 +10,6 @@ export interface ComitteeProps {
 
 const TechnicalComittee = ({
   birthdate,
-  passport,
   name,
   age,
   role,
@@ -53,3 +51,4 @@ const TechnicalComittee = ({
 };
 
 export default TechnicalComittee;
+

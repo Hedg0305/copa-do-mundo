@@ -11,13 +11,25 @@ interface BracketRowProps {
   d?: number;
   e?: number;
   index: number;
+  id: number;
 }
 
-const BracketRow = ({ index, country, d, e, gc, gp, v }: BracketRowProps) => {
+const BracketRow = ({
+  index,
+  country,
+  d,
+  e,
+  gc,
+  gp,
+  v,
+  id,
+}: BracketRowProps) => {
   const router = useRouter();
 
   return (
-    <Link href={country ? `${router.asPath}/${country}` : `${router.asPath}`}>
+    <Link
+      href={country ? `${router.asPath}/${id}/${country}` : `${router.asPath}`}
+    >
       <Tbody
         bgColor={index % 2 == 0 ? "gray.100" : "gray.200"}
         borderLeft='2px'

@@ -12,10 +12,15 @@ import {
   Select,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { ComitteeProps } from "../TechnicalComittee";
 import ComitteeForm from "./ComitteeForm/index";
 import PlayerForm from "./PlayerForm";
 
-const AddPersonForm = () => {
+interface AddPersonFormProps {
+  upDateComittee: (comittee: ComitteeProps[]) => void;
+}
+
+const AddPersonForm = ({ upDateComittee }: AddPersonFormProps) => {
   return (
     <Tabs isFitted variant='solid-rounded'>
       <TabList mb='1em'>
@@ -24,7 +29,7 @@ const AddPersonForm = () => {
       </TabList>
       <TabPanels>
         <TabPanel>
-          <ComitteeForm />
+          <ComitteeForm upDateComittee={upDateComittee} />
         </TabPanel>
         <TabPanel>
           <PlayerForm />

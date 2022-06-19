@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { Box, Center, Grid, Heading, VStack } from "@chakra-ui/react";
-import Player, { PlayerProps } from "../../components/PlayerCard";
+import Player, { PlayerProps } from "../../../components/PlayerCard";
 import TechnicalComittee, {
   ComitteeProps,
-} from "../../components/TechnicalComittee";
-import AddPersonForm from "../../components/AddPersonForm";
+} from "../../../components/TechnicalComittee";
+import AddPersonForm from "../../../components/AddPersonForm";
+import { ComicaoInfo, getCommittee } from "../../../api/comittee";
 
 interface ServerSideProps {
   edition: string;
   team: string;
+  id: string;
 }
 
 interface PageProps {
@@ -40,8 +42,15 @@ const Competition = ({
   technicalComittee,
   players,
 }: PageProps) => {
+  const [technicalComitteeList, setTechnicalComitteeList] =
+    useState<ComitteeProps[]>();
+
+  useEffect(() => {
+    setTechnicalComitteeList(technicalComittee);
+  }, []);
+
   return (
-    <Box h='100vh'>
+    <Box minH='100vh'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
@@ -52,7 +61,7 @@ const Competition = ({
             {team}
           </Heading>
 
-          <AddPersonForm />
+          <AddPersonForm upDateComittee={setTechnicalComitteeList} />
 
           <Heading as='h3' size='md'>
             Jogadores
@@ -74,12 +83,11 @@ const Competition = ({
             Comissão Técnica
           </Heading>
           <Grid templateColumns='repeat(2, 1fr)' gap='35px'>
-            {technicalComittee.map((comittee) => (
+            {technicalComittee.map((comittee, index) => (
               <TechnicalComittee
-                passport={comittee.passport}
+                key={comittee.name + comittee.age + index}
                 name={comittee.name}
                 age={comittee.age}
-                key={comittee.passport}
                 birthdate={comittee.birthdate}
                 role={comittee.role}
               />
@@ -94,23 +102,18 @@ const Competition = ({
 export default Competition;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { edition, team } = params as unknown as ServerSideProps;
+  const { edition, team, id: teamId } = params as unknown as ServerSideProps;
   const [year, hostCountry] = edition.split("-");
+
+  const comittee = await getCommittee(teamId, year);
+  const formattedComittee = formatComittee(comittee);
 
   return {
     props: {
       year,
       hostCountry,
       team,
-      technicalComittee: [
-        {
-          passport: "56467987451",
-          name: "Hernan Gomez",
-          age: 45,
-          birthdate: "12/06/1985",
-          role: "Técnico",
-        },
-      ],
+      technicalComittee: formattedComittee,
       players: [
         {
           passport: "231654564",
@@ -142,4 +145,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
   };
 };
+
+export function formatComittee(comittee: ComicaoInfo[]): ComitteeProps[] {
+  return comittee.map((comittee) => {
+    return {
+      name: comittee.nome,
+      age: comittee.idade,
+      birthdate: comittee.dataNascimento,
+      role: comittee.funcao,
+    };
+  });
+}
 

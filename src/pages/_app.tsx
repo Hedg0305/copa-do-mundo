@@ -4,7 +4,7 @@ import { Box, ChakraProvider } from "@chakra-ui/react";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
-      <Box bgColor='gray.100'>
+      <Box bgColor='gray.100' paddingY='25px'>
         <Component {...pageProps} />
       </Box>
     </ChakraProvider>

@@ -7,7 +7,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { TeamInfo } from "../../pages/[edition]/[team]";
+import { TeamInfo } from "../../pages/[edition]/[id]/[team]";
 import BracketRow from "../BracketRow";
 
 interface BracketProps {
@@ -54,6 +54,7 @@ const Bracket = ({ group, teams }: BracketProps) => {
           <BracketRow
             key={(teams[index] && teams[index]?.country) || index}
             index={index}
+            id={teams[index] && teams[index]?.id}
             country={teams[index] && teams[index]?.country}
             v={teams[index] && teams[index]?.wins}
             e={teams[index] && teams[index]?.draws}

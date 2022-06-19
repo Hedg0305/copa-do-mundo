@@ -15,7 +15,7 @@ import {
 import Bracket from "../../components/Bracket";
 import { useRouter } from "next/router";
 import { createTeam, getTeams, Team } from "../../api/team";
-import { TeamInfo } from "./[team]";
+import { TeamInfo } from "./[id]/[team]";
 import {
   AutoComplete,
   AutoCompleteInput,
@@ -72,7 +72,7 @@ const Competition = ({ country, year, groups, countryOptions }: PageProps) => {
   };
 
   return (
-    <Box minH='100vh' bgColor='gray.400' p='20px 0 20px 0'>
+    <Box minH='100vh' p='20px 0 20px 0'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>

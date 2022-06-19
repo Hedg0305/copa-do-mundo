@@ -8,15 +8,40 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { createComittee } from "../../../api/comittee";
+import { formatComittee } from "../../../pages/[edition]/[id]/[team]";
+import { ComitteeProps } from "../../TechnicalComittee";
 
-const ComitteeForm = () => {
+interface AddComitteeFormProps {
+  upDateComittee: (comittee: ComitteeProps[]) => void;
+}
+
+const ComitteeForm = ({ upDateComittee }: AddComitteeFormProps) => {
   const [passport, setPassport] = useState("");
   const [name, setName] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [role, setRole] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const { edition, id } = router.query as any;
+    const [year] = edition?.split("-");
+
+    if (passport && name && birthdate && role) {
+      const { comissaoTecnicaDaEdicao } = await createComittee({
+        nome: name,
+        dataNascimento: new Date(birthdate),
+        passaporte: passport,
+        funcao: role,
+        idade: parseInt(year) - parseInt(birthdate.split("-")[0]),
+        equipe: id,
+        ano: year,
+      });
+      const formattedComittee = formatComittee(comissaoTecnicaDaEdicao);
+      upDateComittee(formattedComittee);
+    }
   };
 
   return (
@@ -29,7 +54,7 @@ const ComitteeForm = () => {
               id='name'
               type='name'
               value={name}
-              onChange={() => setName(name)}
+              onChange={(e) => setName(e.target.value)}
             />
           </Box>
           <Box>
@@ -38,7 +63,7 @@ const ComitteeForm = () => {
               id='passport'
               type='passport'
               value={passport}
-              onChange={() => setPassport(passport)}
+              onChange={(e) => setPassport(e.target.value)}
             />
           </Box>
         </VStack>
@@ -47,9 +72,9 @@ const ComitteeForm = () => {
             <FormLabel htmlFor='birthdate'>Data de nascimento</FormLabel>
             <Input
               id='birthdate'
-              type='birthdate'
+              type='date'
               value={birthdate}
-              onChange={() => setBirthdate(birthdate)}
+              onChange={(e) => setBirthdate(e.target.value)}
             />
           </Box>
           <Box>
@@ -58,7 +83,7 @@ const ComitteeForm = () => {
               id='role'
               type='role'
               value={role}
-              onChange={() => setRole(role)}
+              onChange={(e) => setRole(e.target.value)}
             />
           </Box>
         </VStack>

@@ -52,7 +52,7 @@ const Home = ({ editions }: HomeProps) => {
   };
 
   return (
-    <Box >
+    <Box>
       <Center h='100vh'>
         <VStack justifyContent='center'>
           <Heading as='h1' size='2xl' mb='10'>
