@@ -22,10 +22,16 @@ const Match = ({
 }: MatchProps) => {
   return (
     <Box
-      bgColor='gray.300'
+      bgColor='gray.500'
+      color='white'
       p='15px'
       borderRadius='10px'
       borderBottom='1px'
+      transitionDuration='0.4s'
+      _hover={{
+        boxShadow: "lg",
+        transform: "translate(2%, 2px)",
+      }}
       key={gameDate}
     >
       <Box display='flex' justifyContent='space-between' alignItems='center'>
@@ -36,7 +42,7 @@ const Match = ({
       <Center>
         <Box
           as='span'
-          color={winner === team1 ? "green.400" : "black"}
+          color={winner === team1 ? "green.400" : "white"}
           mr='20px'
         >
           {team1}
@@ -44,7 +50,7 @@ const Match = ({
         {goalsTeam1} X {goalsTeam2}
         <Box
           as='span'
-          color={winner === team2 ? "green.400" : "black"}
+          color={winner === team2 ? "green.400" : "white"}
           ml='20px'
         >
           {team2}

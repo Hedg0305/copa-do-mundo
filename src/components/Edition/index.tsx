@@ -13,8 +13,21 @@ const Edition = ({ country, id, year }: EditionProps) => {
     <Link href={`${String(year)}-${country}`}>
       <VStack
         cursor='pointer'
+        transition='0.4s'
         _hover={{
           color: "white",
+          _after: {
+            w: "100%",
+          },
+        }}
+        _after={{
+          content: '""',
+          display: "block",
+          m: "5px",
+          h: "2px",
+          w: "0px",
+          bg: "white",
+          transition: "width .4s ease, background-color .4s ease",
         }}
       >
         <Heading as='h3' size='lg'>

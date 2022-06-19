@@ -20,12 +20,13 @@ const BracketRow = ({ index, country, d, e, gc, gp, v }: BracketRowProps) => {
     <Link href={country ? `${router.asPath}/${country}` : "#"}>
       <Tbody
         bgColor={index % 2 == 0 ? "gray.100" : "gray.200"}
-        borderLeft={index < 2 ? "2px" : "2px"}
+        borderLeft='2px'
         borderLeftColor={index < 2 ? "green.400" : "red.400"}
         _hover={{ bgColor: "gray.300" }}
         borderBottom={index == 1 ? "2px" : "0px"}
-        borderBottomStyle={index == 1 ? "dashed" : "dashed"}
+        borderBottomStyle='dashed'
         borderBottomColor={index == 1 ? "gray.400" : ""}
+        transition='0.2s'
       >
         <Tr>
           <Td>{index + 1}</Td>
@@ -42,4 +43,3 @@ const BracketRow = ({ index, country, d, e, gc, gp, v }: BracketRowProps) => {
 };
 
 export default BracketRow;
-

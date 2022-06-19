@@ -39,10 +39,10 @@ const Competition = ({ country, year }: PageProps) => {
 
   const handleSeeMatches = () => {
     router.push(`${router.asPath}/matches`);
-  }
+  };
 
   return (
-    <Box minH='100vh' bgColor='gray.400'>
+    <Box minH='100vh' bgColor='gray.400' p='20px 0 20px 0'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
@@ -51,7 +51,7 @@ const Competition = ({ country, year }: PageProps) => {
 
           <FormControl display='flex' alignItems='flex-end' gap='20px'>
             <Box>
-              <FormLabel htmlFor='country'>Country name</FormLabel>
+              <FormLabel htmlFor='country'>Nome da equipe</FormLabel>
               <Input
                 id='country'
                 type='country'
@@ -60,13 +60,13 @@ const Competition = ({ country, year }: PageProps) => {
               />
             </Box>
             <Box>
-              <FormLabel htmlFor='selectGroup'>Select a group</FormLabel>
+              <FormLabel htmlFor='selectGroup'>Grupo</FormLabel>
               <Select
-                placeholder='Select option'
+                placeholder='Selecionar'
                 id='selectGroup'
                 onChange={(e) => setGroup(e.target.value)}
               >
-                {["a", "b", "c", "d", "e", "f", "g", "h"].map((letter) => (
+                {["A", "B", "C", "D", "E", "F", "G", "H"].map((letter) => (
                   <option key={letter} value={letter}>
                     {letter}
                   </option>
@@ -74,12 +74,13 @@ const Competition = ({ country, year }: PageProps) => {
               </Select>
             </Box>
             <Button colorScheme='teal' type='submit' onClick={handleSubmit}>
-              Submit
+              Enviar
+            </Button>
+            <Button type='button' colorScheme='gray' onClick={handleSeeMatches}>
+              Ver partidas
             </Button>
           </FormControl>
-          <Button type='button' colorScheme='gray' onClick={handleSeeMatches}>
-            Ver partidas
-          </Button>
+
           <Grid gridTemplateColumns='repeat(2, 1fr)' gap='25px'>
             <Bracket group='Grupo A' />
             <Bracket group='Grupo A' />
@@ -109,4 +110,3 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
   };
 };
-

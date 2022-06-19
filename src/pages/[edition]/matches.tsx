@@ -24,7 +24,7 @@ interface Matches {
 
 const Matches = ({ year, matches }: PageProps) => {
   return (
-    <Box bgColor='gray.400' h='100%'>
+    <Box bgColor='gray.400' h='100%' p='20px 0 20px 0'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
