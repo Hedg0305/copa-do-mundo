@@ -24,13 +24,13 @@ interface Matches {
 
 const Matches = ({ year, matches }: PageProps) => {
   return (
-    <Box bgColor='gray.400' h='100%' p='20px 0 20px 0'>
+    <Box h='100%' p='20px 0 20px 0'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
             Partidas - {year}
           </Heading>
-          <Grid>
+          <Grid boxShadow='xl'>
             {matches
               .filter((match) => match.fase === "grupos")
               .map((groupMatch, index) => (
@@ -380,3 +380,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
   };
 };
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps, GetStaticProps } from "next";
 import {
   Box,
@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/react";
 import Bracket from "../../components/Bracket";
 import { useRouter } from "next/router";
+import { createTeam, getTeams, Team } from "../../api/team";
+import { TeamInfo } from "./[team]";
 
 interface ServerSideProps {
   edition: string;
@@ -23,18 +25,31 @@ interface ServerSideProps {
 interface PageProps {
   country: string;
   year: number;
+  groups: {
+    [key: string]: TeamInfo[];
+  };
 }
 
-const Competition = ({ country, year }: PageProps) => {
+const Competition = ({ country, year, groups }: PageProps) => {
   const [countryName, setCountryName] = useState("");
   const [group, setGroup] = useState("");
   const router = useRouter();
+  const [newGroups, setNewGroups] = useState<{
+    [key: string]: TeamInfo[];
+  }>({});
 
   const handleInputChange = (e: any) => setCountryName(e.target.value);
 
-  const handleSubmit = () => {
-    console.log("Country: ", countryName);
-    console.log("Group: ", group);
+  useEffect(() => {
+    setNewGroups(groups);
+  }, [groups]);
+
+  const handleSubmit = async () => {
+    if (countryName && group) {
+      const { equipesDaEdicao } = await createTeam(countryName, year, group);
+      const splitGroups = formatTeams(equipesDaEdicao);
+      setNewGroups(splitGroups);
+    }
   };
 
   const handleSeeMatches = () => {
@@ -66,9 +81,18 @@ const Competition = ({ country, year }: PageProps) => {
                 id='selectGroup'
                 onChange={(e) => setGroup(e.target.value)}
               >
-                {["A", "B", "C", "D", "E", "F", "G", "H"].map((letter) => (
-                  <option key={letter} value={letter}>
-                    {letter}
+                {[
+                  "Grupo A",
+                  "Grupo B",
+                  "Grupo C",
+                  "Grupo D",
+                  "Grupo E",
+                  "Grupo F",
+                  "Grupo G",
+                  "Grupo H",
+                ].map((group) => (
+                  <option key={group} value={group}>
+                    {group}
                   </option>
                 ))}
               </Select>
@@ -82,14 +106,9 @@ const Competition = ({ country, year }: PageProps) => {
           </FormControl>
 
           <Grid gridTemplateColumns='repeat(2, 1fr)' gap='25px'>
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
-            <Bracket group='Grupo A' />
+            {Object?.keys(newGroups)?.map((key) => {
+              return <Bracket group={key} key={key} teams={newGroups[key]} />;
+            })}
           </Grid>
         </VStack>
       </Center>
@@ -102,11 +121,44 @@ export default Competition;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { edition } = params as unknown as ServerSideProps;
   const [year, country] = edition.split("-");
+  const teams = await getTeams(Number(year));
+  const groups = formatTeams(teams);
 
   return {
     props: {
       year,
       country,
+      groups,
     },
   };
 };
+
+const formatTeams = (teams: Team[]) => {
+  const formatedTeams = teams.map<TeamInfo>((team) => ({
+    country: team.pais,
+    id: team.id,
+    draws: team.numeroDeEmpates,
+    loses: team.numeroDeDerrotas,
+    wins: team.numeroDeVitorias,
+    golsPro: team.golsPro,
+    goalsDifference: team.saldoDeGols,
+    goalsAgainst: team.golsContra,
+    group: team.grupo,
+    year: team.ano,
+  }));
+
+  const separatedGroups = formatedTeams.reduce<{ [key: string]: TeamInfo[] }>(
+    (acc, team) => {
+      const group = team.group;
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push(team);
+      return acc;
+    },
+    {}
+  );
+
+  return separatedGroups;
+};
+

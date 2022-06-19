@@ -17,10 +17,6 @@ const ComitteeForm = () => {
   const [role, setRole] = useState("");
 
   const handleSubmit = () => {
-    console.log("Passport: ", passport);
-    console.log("Name: ", name);
-    console.log("Birthdate: ", birthdate);
-    console.log("Role: ", role);
   };
 
   return (

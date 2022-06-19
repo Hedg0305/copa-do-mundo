@@ -17,7 +17,7 @@ const BracketRow = ({ index, country, d, e, gc, gp, v }: BracketRowProps) => {
   const router = useRouter();
 
   return (
-    <Link href={country ? `${router.asPath}/${country}` : "#"}>
+    <Link href={country ? `${router.asPath}/${country}` : `${router.asPath}`}>
       <Tbody
         bgColor={index % 2 == 0 ? "gray.100" : "gray.200"}
         borderLeft='2px'
@@ -43,3 +43,4 @@ const BracketRow = ({ index, country, d, e, gc, gp, v }: BracketRowProps) => {
 };
 
 export default BracketRow;
+

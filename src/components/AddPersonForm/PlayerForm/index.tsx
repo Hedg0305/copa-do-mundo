@@ -29,16 +29,6 @@ const PlayerForm = () => {
   const [redCards, setRedCards] = useState(0);
 
   const handleSubmit = () => {
-    console.log("Passport: ", passport);
-    console.log("Birthdate: ", birthdate);
-    console.log("Name: ", name);
-    console.log("Position: ", position);
-    console.log("Defenses: ", defenses);
-    console.log("SufferedGoals: ", sufferedGoals);
-    console.log("Goals: ", goals);
-    console.log("Assists: ", assists);
-    console.log("YellowCards: ", yellowCards);
-    console.log("RedCards: ", redCards);
   };
 
   return (

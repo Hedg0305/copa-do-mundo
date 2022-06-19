@@ -20,6 +20,19 @@ interface PageProps {
   technicalComittee: ComitteeProps[];
 }
 
+export interface TeamInfo {
+  id: number;
+  country: string;
+  year: number;
+  group: string;
+  golsPro: number;
+  goalsAgainst: number;
+  goalsDifference: number;
+  wins: number;
+  loses: number;
+  draws: number;
+}
+
 const Competition = ({
   hostCountry,
   year,
@@ -28,7 +41,7 @@ const Competition = ({
   players,
 }: PageProps) => {
   return (
-    <Box bgColor='gray.400' h='100vh'>
+    <Box h='100vh'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>

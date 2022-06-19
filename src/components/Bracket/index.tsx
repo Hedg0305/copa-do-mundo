@@ -7,13 +7,15 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { TeamInfo } from "../../pages/[edition]/[team]";
 import BracketRow from "../BracketRow";
 
 interface BracketProps {
   group: string;
+  teams: TeamInfo[];
 }
 
-const Bracket = ({ group }: BracketProps) => {
+const Bracket = ({ group, teams }: BracketProps) => {
   return (
     <TableContainer>
       {group}
@@ -49,7 +51,16 @@ const Bracket = ({ group }: BracketProps) => {
           </Tr>
         </Thead>
         {[1, 2, 3, 4].map((i, index) => (
-          <BracketRow key={i} index={index} />
+          <BracketRow
+            key={(teams[index] && teams[index]?.country) || index}
+            index={index}
+            country={teams[index] && teams[index]?.country}
+            v={teams[index] && teams[index]?.wins}
+            e={teams[index] && teams[index]?.draws}
+            d={teams[index] && teams[index]?.loses}
+            gp={teams[index] && teams[index]?.golsPro}
+            gc={teams[index] && teams[index]?.goalsAgainst}
+          />
         ))}
       </Table>
     </TableContainer>
@@ -57,3 +68,4 @@ const Bracket = ({ group }: BracketProps) => {
 };
 
 export default Bracket;
+
