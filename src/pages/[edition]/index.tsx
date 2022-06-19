@@ -14,6 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Bracket from "../../components/Bracket";
+import { useRouter } from "next/router";
 
 interface ServerSideProps {
   edition: string;
@@ -27,6 +28,7 @@ interface PageProps {
 const Competition = ({ country, year }: PageProps) => {
   const [countryName, setCountryName] = useState("");
   const [group, setGroup] = useState("");
+  const router = useRouter();
 
   const handleInputChange = (e: any) => setCountryName(e.target.value);
 
@@ -34,6 +36,10 @@ const Competition = ({ country, year }: PageProps) => {
     console.log("Country: ", countryName);
     console.log("Group: ", group);
   };
+
+  const handleSeeMatches = () => {
+    router.push(`${router.asPath}/matches`);
+  }
 
   return (
     <Box minH='100vh' bgColor='gray.400'>
@@ -71,7 +77,9 @@ const Competition = ({ country, year }: PageProps) => {
               Submit
             </Button>
           </FormControl>
-
+          <Button type='button' colorScheme='gray' onClick={handleSeeMatches}>
+            Ver partidas
+          </Button>
           <Grid gridTemplateColumns='repeat(2, 1fr)' gap='25px'>
             <Bracket group='Grupo A' />
             <Bracket group='Grupo A' />
