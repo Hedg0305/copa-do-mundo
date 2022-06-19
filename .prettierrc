@@ -1,0 +1,11 @@
+{
+  "jsxSingleQuote": true,
+  "singleQuote": false,
+  "enable": true,
+  "bracketSpacing": true,
+  "endOfLine": "crlf",
+  "embeddedLanguageFormatting": "auto",
+  "semi": true,
+  "printWidth": 80
+}
+
