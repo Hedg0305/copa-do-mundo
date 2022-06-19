@@ -49,7 +49,7 @@ const Bracket = ({ group }: BracketProps) => {
           </Tr>
         </Thead>
         {[1, 2, 3, 4].map((i, index) => (
-          <BracketRow key={i} index={index} country='Argentina' />
+          <BracketRow key={i} index={index} />
         ))}
       </Table>
     </TableContainer>

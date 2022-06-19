@@ -66,7 +66,7 @@ const Competition = ({ country, year }: PageProps) => {
                 id='selectGroup'
                 onChange={(e) => setGroup(e.target.value)}
               >
-                {["a", "b", "c", "d"].map((letter) => (
+                {["a", "b", "c", "d", "e", "f", "g", "h"].map((letter) => (
                   <option key={letter} value={letter}>
                     {letter}
                   </option>
