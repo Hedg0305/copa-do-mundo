@@ -1,11 +1,12 @@
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <Box padding='20px 0 20px 0' bgColor='gray.400'>
+        <Component {...pageProps} />
+      </Box>
     </ChakraProvider>
   );
 }
