@@ -29,4 +29,3 @@ const Edition = ({ country, id, year }: EditionProps) => {
 };
 
 export default Edition;
-

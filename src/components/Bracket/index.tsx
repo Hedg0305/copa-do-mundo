@@ -57,4 +57,3 @@ const Bracket = ({ group }: BracketProps) => {
 };
 
 export default Bracket;
-
