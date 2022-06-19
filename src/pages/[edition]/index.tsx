@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { GetServerSideProps, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import {
+  Avatar,
   Box,
   Button,
   Center,
-  Flex,
   FormControl,
   FormLabel,
   Grid,
   Heading,
-  Input,
-  Select,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import Bracket from "../../components/Bracket";
 import { useRouter } from "next/router";
 import { createTeam, getTeams, Team } from "../../api/team";
 import { TeamInfo } from "./[team]";
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteList,
+  AutoCompleteItem,
+  AutoCompleteRefMethods,
+} from "@choc-ui/chakra-autocomplete";
 
 interface ServerSideProps {
   edition: string;
@@ -28,9 +34,13 @@ interface PageProps {
   groups: {
     [key: string]: TeamInfo[];
   };
+  countryOptions: {
+    name: string;
+    flag: string;
+  }[];
 }
 
-const Competition = ({ country, year, groups }: PageProps) => {
+const Competition = ({ country, year, groups, countryOptions }: PageProps) => {
   const [countryName, setCountryName] = useState("");
   const [group, setGroup] = useState("");
   const router = useRouter();
@@ -38,17 +48,22 @@ const Competition = ({ country, year, groups }: PageProps) => {
     [key: string]: TeamInfo[];
   }>({});
 
-  const handleInputChange = (e: any) => setCountryName(e.target.value);
-
   useEffect(() => {
     setNewGroups(groups);
   }, [groups]);
+
+  const autocompleteCountriesRef = React.useRef<AutoCompleteRefMethods>(null);
+  const autocompleteGroupsRef = React.useRef<AutoCompleteRefMethods>(null);
 
   const handleSubmit = async () => {
     if (countryName && group) {
       const { equipesDaEdicao } = await createTeam(countryName, year, group);
       const splitGroups = formatTeams(equipesDaEdicao);
       setNewGroups(splitGroups);
+      autocompleteCountriesRef?.current?.removeItem(countryName);
+      autocompleteGroupsRef?.current?.removeItem(group);
+      setCountryName("");
+      setGroup("");
     }
   };
 
@@ -66,36 +81,62 @@ const Competition = ({ country, year, groups }: PageProps) => {
 
           <FormControl display='flex' alignItems='flex-end' gap='20px'>
             <Box>
-              <FormLabel htmlFor='country'>Nome da equipe</FormLabel>
-              <Input
-                id='country'
-                type='country'
-                value={countryName}
-                onChange={handleInputChange}
-              />
+              <FormLabel>Selecione um time</FormLabel>
+              <AutoComplete
+                openOnFocus
+                onChange={(value) => setCountryName(value)}
+                ref={autocompleteCountriesRef}
+              >
+                <AutoCompleteInput variant='filled' />
+                <AutoCompleteList>
+                  {countryOptions.map((country) => (
+                    <AutoCompleteItem
+                      key={`option-${country.name}`}
+                      value={country.name}
+                      textTransform='capitalize'
+                      align='center'
+                    >
+                      <Avatar
+                        size='sm'
+                        name={country.name}
+                        src={country.flag}
+                      />
+                      <Text ml='4'>{country.name}</Text>
+                    </AutoCompleteItem>
+                  ))}
+                </AutoCompleteList>
+              </AutoComplete>
             </Box>
             <Box>
-              <FormLabel htmlFor='selectGroup'>Grupo</FormLabel>
-              <Select
-                placeholder='Selecionar'
-                id='selectGroup'
-                onChange={(e) => setGroup(e.target.value)}
+              <FormLabel>Selecione um grupo</FormLabel>
+              <AutoComplete
+                openOnFocus
+                onChange={(value) => setGroup(value)}
+                ref={autocompleteGroupsRef}
               >
-                {[
-                  "Grupo A",
-                  "Grupo B",
-                  "Grupo C",
-                  "Grupo D",
-                  "Grupo E",
-                  "Grupo F",
-                  "Grupo G",
-                  "Grupo H",
-                ].map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
-              </Select>
+                <AutoCompleteInput variant='filled' />
+                <AutoCompleteList>
+                  {[
+                    "Grupo A",
+                    "Grupo B",
+                    "Grupo C",
+                    "Grupo D",
+                    "Grupo E",
+                    "Grupo F",
+                    "Grupo G",
+                    "Grupo H",
+                  ].map((group) => (
+                    <AutoCompleteItem
+                      key={`option-${group}`}
+                      value={group}
+                      textTransform='capitalize'
+                      align='center'
+                    >
+                      <Text ml='4'>{group}</Text>
+                    </AutoCompleteItem>
+                  ))}
+                </AutoCompleteList>
+              </AutoComplete>
             </Box>
             <Button colorScheme='teal' type='submit' onClick={handleSubmit}>
               Enviar
@@ -124,11 +165,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const teams = await getTeams(Number(year));
   const groups = formatTeams(teams);
 
+  const countriesOptions = await fetch("https://restcountries.com/v2/all");
+  const countriesJSON = await countriesOptions.json();
+
+  const formatOptions = countriesJSON.map((country: any) => ({
+    name: country.name,
+    flag: country.flags.png,
+  }));
+
   return {
     props: {
       year,
       country,
       groups,
+      countryOptions: formatOptions,
     },
   };
 };
