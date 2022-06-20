@@ -5,9 +5,7 @@ import Bracket from "../components/Bracket";
 const blank = () => {
   return (
     <Box bgColor='gray.100'>
-      <Center h='100vh'>
-        <Bracket group='Grupo A' />
-      </Center>
+      <Center h='100vh'></Center>
     </Box>
   );
 };
