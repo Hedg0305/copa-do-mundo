@@ -7,28 +7,24 @@ import {
   Button,
   VStack,
   HStack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import ComitteeForm from "../ComitteeForm";
 
 const PlayerForm = () => {
   const [passport, setPassport] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
-  const [defenses, setDefenses] = useState(0);
-  const [sufferedGoals, setSufferedGoals] = useState(0);
-  const [goals, setGoals] = useState(0);
-  const [assists, setAssists] = useState(0);
-  const [yellowCards, setYellowCards] = useState(0);
-  const [redCards, setRedCards] = useState(0);
+  const router = useRouter();
 
   const handleSubmit = () => {
+    const { edition, id } = router.query as any;
+    const [year] = edition?.split("-");
+
+    if (passport && name && birthdate && position) {
+      // const repsonse = await cre;
+    }
   };
 
   return (
@@ -41,7 +37,7 @@ const PlayerForm = () => {
               id='name'
               type='name'
               value={name}
-              onChange={() => setName(name)}
+              onChange={(e) => setName(e.target.value)}
             />
           </Box>
           <Box>
@@ -50,7 +46,7 @@ const PlayerForm = () => {
               id='passport'
               type='passport'
               value={passport}
-              onChange={() => setPassport(passport)}
+              onChange={(e) => setPassport(e.target.value)}
             />
           </Box>
         </VStack>
@@ -76,7 +72,7 @@ const PlayerForm = () => {
               id='birthdate'
               type='birthdate'
               value={birthdate}
-              onChange={() => setBirthdate(birthdate)}
+              onChange={(e) => setBirthdate(e.target.value)}
             />
           </Box>
         </VStack>
@@ -91,13 +87,5 @@ const PlayerForm = () => {
 
 export default PlayerForm;
 
-const positions = [
-  "Goleiro",
-  "Zagueiro",
-  "Lateral Direito",
-  "Lateral Esquerdo",
-  "Meio-Campo",
-  "Atacante",
-  "Volante",
-];
+const positions = ["PE", "ZAG", "LE", "LD", "MC", "ATAC", "VOL"];
 

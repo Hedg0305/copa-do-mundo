@@ -47,7 +47,7 @@ const Competition = ({
 
   useEffect(() => {
     setTechnicalComitteeList(technicalComittee);
-  }, []);
+  }, [technicalComittee]);
 
   return (
     <Box minH='100vh'>
@@ -83,7 +83,7 @@ const Competition = ({
             Comissão Técnica
           </Heading>
           <Grid templateColumns='repeat(2, 1fr)' gap='35px'>
-            {technicalComittee.map((comittee, index) => (
+            {technicalComitteeList?.map((comittee, index) => (
               <TechnicalComittee
                 key={comittee.name + comittee.age + index}
                 name={comittee.name}
