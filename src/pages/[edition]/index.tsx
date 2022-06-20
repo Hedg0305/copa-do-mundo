@@ -211,4 +211,3 @@ export const formatTeams = (teams: Team[]) => {
 
   return separatedGroups;
 };
-

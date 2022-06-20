@@ -15,7 +15,7 @@ const Edition = ({ country, id, year }: EditionProps) => {
         cursor='pointer'
         transition='0.4s'
         _hover={{
-          color: "gray.300",
+          color: "gray.400",
           _after: {
             w: "100%",
           },

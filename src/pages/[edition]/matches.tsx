@@ -2,6 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { Box, Center, Grid, Heading, VStack } from "@chakra-ui/react";
 import Match from "../../components/Match";
+import AddMatchForm from "../../components/AddMatchForm";
 interface ServerSideProps {
   edition: string;
 }
@@ -30,6 +31,7 @@ const Matches = ({ year, matches }: PageProps) => {
           <Heading as='h1' size='2xl' mb='10'>
             Partidas - {year}
           </Heading>
+          <AddMatchForm />
           <Grid gridTemplateColumns='repeat(2, 1fr)' gap='20px'>
             {matches.map((match, index) => (
               <Match
