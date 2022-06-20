@@ -30,166 +30,22 @@ const Matches = ({ year, matches }: PageProps) => {
           <Heading as='h1' size='2xl' mb='10'>
             Partidas - {year}
           </Heading>
-          <Grid boxShadow='xl'>
-            {matches
-              .filter((match) => match.fase === "grupos")
-              .map((groupMatch, index) => (
-                <Box
-                  bg={index % 2 === 0 ? "gray.200" : "gray.300"}
-                  key={groupMatch.gameDate}
-                  w='60vw'
-                  fontSize='20px'
-                  p='20px'
-                >
-                  <Box
-                    display='flex'
-                    justifyContent='space-between'
-                    alignItems='center'
-                  >
-                    <Box>
-                      Fase: {groupMatch.fase}
-                      <br />
-                      Estádio: {groupMatch.stadium}
-                    </Box>
-                    Data: {groupMatch.gameDate}
-                  </Box>
-                  <Center>
-                    <Box
-                      as='span'
-                      color={
-                        groupMatch.winner === groupMatch.team1
-                          ? "green.400"
-                          : "black"
-                      }
-                      mr='20px'
-                    >
-                      {groupMatch.team1}
-                    </Box>
-                    {groupMatch.goalsTeam1} X {groupMatch.goalsTeam2}
-                    <Box
-                      as='span'
-                      color={
-                        groupMatch.winner === groupMatch.team2
-                          ? "green.400"
-                          : "black"
-                      }
-                      ml='20px'
-                    >
-                      {groupMatch.team2}
-                    </Box>
-                  </Center>
-                </Box>
-              ))}
+          <Grid gridTemplateColumns='repeat(2, 1fr)' gap='20px'>
+            {matches.map((match, index) => (
+              <Match
+                gameDate={match.gameDate}
+                goalsTeam1={match.goalsTeam1}
+                goalsTeam2={match.goalsTeam2}
+                stadium={match.stadium}
+                team1={match.team1}
+                team2={match.team2}
+                winner={match.winner}
+                fase={match.fase}
+                key={index}
+              />
+            ))}
           </Grid>
         </VStack>
-      </Center>
-      <Center display='flex' flexDirection='column' mt='30px'>
-        <Box
-          display='flex'
-          w='100%'
-          justifyContent='center'
-          fontSize='18px'
-          fontWeight='Bold'
-        >
-          <Box w='242px' textAlign='center'>
-            OITAVAS
-          </Box>
-          <Box w='242px' textAlign='center'>
-            QUARTAS
-          </Box>
-          <Box w='242px' textAlign='center'>
-            SEMIFINAIS
-          </Box>
-          <Box w='242px' textAlign='center'>
-            FINAL
-          </Box>
-        </Box>
-        <Box display='flex'>
-          <Box
-            display='flex'
-            flexDirection='column'
-            m='5px'
-            justifyContent='space-between'
-          >
-            {matches
-              .filter((matches) => matches.fase === "oitavas")
-              .map((round16Match) => (
-                <Match
-                  key={round16Match.gameDate}
-                  gameDate={round16Match.gameDate}
-                  goalsTeam1={round16Match.goalsTeam1}
-                  goalsTeam2={round16Match.goalsTeam2}
-                  stadium={round16Match.stadium}
-                  team1={round16Match.team1}
-                  team2={round16Match.team2}
-                  winner={round16Match.winner}
-                />
-              ))}
-          </Box>
-          <Box
-            display='flex'
-            flexDirection='column'
-            m='5px'
-            justifyContent='space-around'
-          >
-            {matches
-              .filter((matches) => matches.fase === "quartas")
-              .map((quarterFinalsMatch) => (
-                <Match
-                  key={quarterFinalsMatch.gameDate}
-                  gameDate={quarterFinalsMatch.gameDate}
-                  goalsTeam1={quarterFinalsMatch.goalsTeam1}
-                  goalsTeam2={quarterFinalsMatch.goalsTeam2}
-                  stadium={quarterFinalsMatch.stadium}
-                  team1={quarterFinalsMatch.team1}
-                  team2={quarterFinalsMatch.team2}
-                  winner={quarterFinalsMatch.winner}
-                />
-              ))}
-          </Box>
-          <Box
-            display='flex'
-            flexDirection='column'
-            m='5px'
-            justifyContent='space-around'
-          >
-            {matches
-              .filter((matches) => matches.fase === "semis")
-              .map((semifinalsMatch) => (
-                <Match
-                  key={semifinalsMatch.gameDate}
-                  gameDate={semifinalsMatch.gameDate}
-                  goalsTeam1={semifinalsMatch.goalsTeam1}
-                  goalsTeam2={semifinalsMatch.goalsTeam2}
-                  stadium={semifinalsMatch.stadium}
-                  team1={semifinalsMatch.team1}
-                  team2={semifinalsMatch.team2}
-                  winner={semifinalsMatch.winner}
-                />
-              ))}
-          </Box>
-          <Box
-            display='flex'
-            flexDirection='column'
-            m='5px'
-            justifyContent='space-around'
-          >
-            {matches
-              .filter((matches) => matches.fase === "final")
-              .map((finalMatch) => (
-                <Match
-                  key={finalMatch.gameDate}
-                  gameDate={finalMatch.gameDate}
-                  goalsTeam1={finalMatch.goalsTeam1}
-                  goalsTeam2={finalMatch.goalsTeam2}
-                  stadium={finalMatch.stadium}
-                  team1={finalMatch.team1}
-                  team2={finalMatch.team2}
-                  winner={finalMatch.winner}
-                />
-              ))}
-          </Box>
-        </Box>
       </Center>
     </Box>
   );
@@ -380,4 +236,3 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
   };
 };
-
