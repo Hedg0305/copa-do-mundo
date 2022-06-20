@@ -8,12 +8,7 @@ export interface ComitteeProps {
   role: string;
 }
 
-const TechnicalComittee = ({
-  birthdate,
-  name,
-  age,
-  role,
-}: ComitteeProps) => {
+const TechnicalComittee = ({ birthdate, name, age, role }: ComitteeProps) => {
   return (
     <Box
       p='15px'
@@ -42,7 +37,7 @@ const TechnicalComittee = ({
           flexDirection='column'
           color='blackAlpha.800'
         >
-          {birthdate}
+          {new Date(birthdate).toLocaleDateString("pt-BR")}
           <div>{role}</div>
         </Box>
       </Box>
