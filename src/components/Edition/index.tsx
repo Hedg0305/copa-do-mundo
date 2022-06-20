@@ -26,7 +26,7 @@ const Edition = ({ country, id, year }: EditionProps) => {
           m: "5px",
           h: "2px",
           w: "0px",
-          bg: "white",
+          bg: "gray.300",
           transition: "width .4s ease, background-color .4s ease",
         }}
       >
