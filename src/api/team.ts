@@ -14,9 +14,8 @@ export interface Team {
 }
 
 export const getTeams = async (year: number) => {
-  const response = await API.get<Team[]>(`/equipes?ano=${year}`);
-  console.log(response);
-  return response.data;
+  const { data } = await API.get<Team[]>(`/equipes?ano=${year}`);
+  return data;
 };
 
 export const createTeam = async (pais: string, ano: number, grupo: string) => {
@@ -27,3 +26,4 @@ export const createTeam = async (pais: string, ano: number, grupo: string) => {
   });
   return data;
 };
+

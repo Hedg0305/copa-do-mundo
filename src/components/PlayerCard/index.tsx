@@ -2,29 +2,21 @@ import { Avatar, Box, Heading, List, ListItem } from "@chakra-ui/react";
 import React from "react";
 
 export interface PlayerProps {
-  passport: string;
-  birthdate: string;
+  birthdate: Date;
   name: string;
   age: number;
-  position: string;
+  position?: string | null;
   stats: {
-    defenses?: number;
-    sufferedGoals?: number;
-    goals?: number;
-    assists?: number;
-    yellowCards: number;
+    defenses?: number | null;
+    sufferedGoals?: number | null;
+    goals?: number | null;
+    assists?: number | null;
+    yellowCards: number | null;
     redCards: number;
   };
 }
 
-const Player = ({
-  birthdate,
-  passport,
-  name,
-  age,
-  position,
-  stats,
-}: PlayerProps) => {
+const Player = ({ birthdate, name, age, position, stats }: PlayerProps) => {
   return (
     <Box
       p='15px'
@@ -53,7 +45,7 @@ const Player = ({
           flexDirection='column'
           color='blackAlpha.800'
         >
-          {birthdate}
+          {/* {birthdate} */}
           <div>Posição: {position}</div>
         </Box>
       </Box>
@@ -81,3 +73,4 @@ const Player = ({
 };
 
 export default Player;
+

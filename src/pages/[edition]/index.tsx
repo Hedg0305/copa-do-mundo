@@ -176,7 +176,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       year,
-      country,
+      country: country || null,
       groups,
       countryOptions: formatOptions,
     },
@@ -211,3 +211,4 @@ export const formatTeams = (teams: Team[]) => {
 
   return separatedGroups;
 };
+

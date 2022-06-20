@@ -10,8 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { createPlayer } from "../../../api/jogador";
 
-const PlayerForm = () => {
+interface PlayerFormProps {
+  upDatePlayers: () => void;
+}
+
+const PlayerForm = ({ upDatePlayers }: PlayerFormProps) => {
   const [passport, setPassport] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [name, setName] = useState("");
@@ -21,9 +26,18 @@ const PlayerForm = () => {
   const handleSubmit = () => {
     const { edition, id } = router.query as any;
     const [year] = edition?.split("-");
+    console.log(id);
 
     if (passport && name && birthdate && position) {
-      // const repsonse = await cre;
+      createPlayer({
+        ano: year,
+        dataNascimento: new Date(birthdate),
+        equipeId: id,
+        nome: name,
+        passaporte: passport,
+        posicao: position,
+      });
+      upDatePlayers();
     }
   };
 
@@ -70,7 +84,7 @@ const PlayerForm = () => {
             <FormLabel htmlFor='birthdate'>Data de nascimento</FormLabel>
             <Input
               id='birthdate'
-              type='birthdate'
+              type='date'
               value={birthdate}
               onChange={(e) => setBirthdate(e.target.value)}
             />
@@ -87,5 +101,5 @@ const PlayerForm = () => {
 
 export default PlayerForm;
 
-const positions = ["PE", "ZAG", "LE", "LD", "MC", "ATAC", "VOL"];
+const positions = ["PE", "ZAG", "LE", "LD", "MC", "ATAC", "VOL", "GOL"];
 
