@@ -4,6 +4,7 @@ import React from "react";
 interface MatchProps {
   stadium: string;
   team1: string;
+  fase: string;
   team2: string;
   goalsTeam1: number;
   goalsTeam2: number;
@@ -13,6 +14,7 @@ interface MatchProps {
 
 const Match = ({
   stadium,
+  fase,
   team1,
   team2,
   goalsTeam1,
@@ -27,35 +29,50 @@ const Match = ({
       p='15px'
       borderRadius='10px'
       borderBottom='1px'
-      transitionDuration='0.4s'
-      _hover={{
-        boxShadow: "lg",
-        transform: "translate(2%, 2px)",
-      }}
-      key={gameDate}
+      boxShadow='xl'
+      fontSize='20px'
     >
-      <Box display='flex' justifyContent='space-between' alignItems='center'>
-        Estádio: {stadium}
-        <br />
-        Data: {gameDate}
+      <Box
+        textTransform='capitalize'
+        fontWeight='semibold'
+        textDecoration='underline'
+      >
+        {fase} ({gameDate})
       </Box>
-      <Center>
+      <Center display='flex' fontSize='24px'>
         <Box
           as='span'
-          color={winner === team1 ? "green.400" : "white"}
+          color={winner === team1 ? "green.300" : "white"}
           mr='20px'
         >
           {team1}
         </Box>
-        {goalsTeam1} X {goalsTeam2}
+        <Box>
+          <Box as='span' color={winner === team1 ? "green.300" : "white"}>
+            {goalsTeam1}
+          </Box>{" "}
+          X{" "}
+          <Box as='span' color={winner === team2 ? "green.300" : "white"}>
+            {goalsTeam2}
+          </Box>
+        </Box>
         <Box
           as='span'
-          color={winner === team2 ? "green.400" : "white"}
+          color={winner === team2 ? "green.300" : "white"}
           ml='20px'
         >
           {team2}
         </Box>
       </Center>
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        color='gray.700'
+        fontWeight='semibold'
+      >
+        Estádio: {stadium}
+      </Box>
     </Box>
   );
 };
