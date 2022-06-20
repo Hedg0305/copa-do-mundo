@@ -24,7 +24,6 @@ const blank = () => {
           name='Tite'
           age={52}
           birthdate='07/08/1983'
-          passport='564654654'
           role='Técnico'
         />
       </Center>
@@ -33,3 +32,4 @@ const blank = () => {
 };
 
 export default blank;
+
