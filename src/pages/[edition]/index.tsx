@@ -183,7 +183,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-const formatTeams = (teams: Team[]) => {
+export const formatTeams = (teams: Team[]) => {
   const formatedTeams = teams.map<TeamInfo>((team) => ({
     country: team.pais,
     id: team.id,
