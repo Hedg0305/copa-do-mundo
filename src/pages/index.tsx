@@ -120,6 +120,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       editions: formatedEditions ?? [],
     },
+    revalidate: 1,
   };
 };
 
