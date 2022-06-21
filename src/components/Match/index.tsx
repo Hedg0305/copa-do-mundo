@@ -1,7 +1,7 @@
 import { Box, Center } from "@chakra-ui/react";
 import React from "react";
 
-interface MatchProps {
+export interface MatchProps {
   stadium: string;
   team1: string;
   fase: string;
@@ -9,7 +9,7 @@ interface MatchProps {
   goalsTeam1: number;
   goalsTeam2: number;
   winner: string;
-  gameDate: string;
+  gameDate: Date;
 }
 
 const Match = ({
@@ -22,6 +22,7 @@ const Match = ({
   winner,
   gameDate,
 }: MatchProps) => {
+  const newGameDate = String(new Date(gameDate).toLocaleDateString("pt-BR"));
   return (
     <Box
       bgColor='gray.500'
@@ -37,7 +38,7 @@ const Match = ({
         fontWeight='semibold'
         textDecoration='underline'
       >
-        {fase} ({gameDate})
+        {fase} ({newGameDate})
       </Box>
       <Center display='flex' fontSize='24px'>
         <Box

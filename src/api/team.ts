@@ -15,7 +15,6 @@ export interface Team {
 
 export const getTeams = async (year: number) => {
   const response = await API.get<Team[]>(`/equipes?ano=${year}`);
-  console.log(response);
   return response.data;
 };
 

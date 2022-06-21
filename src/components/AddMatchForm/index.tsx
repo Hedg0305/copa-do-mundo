@@ -8,32 +8,65 @@ import {
   Select,
   VStack,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
 import router from "next/router";
+
 import React, { useState } from "react";
-import { getTeams, Team } from "../../api/team";
-import { TeamInfo } from "../../pages/[edition]/[id]/[team]";
+import { createMatch, MatchInfo } from "../../api/match";
+import Matches from "../../pages/[edition]/matches";
 
-interface ServerSideProps {
-  edition: string;
-}
-
-interface PageProps {
+interface Props {
   teams: string[];
 }
 
-const AddMatchForm = ({ teams }: PageProps) => {
+interface AddMatchFormProps {
+  updateMatches: (matches: Matches[]) => void;
+}
+
+const AddMatchForm = (
+  { teams }: Props,
+  { updateMatches }: AddMatchFormProps
+) => {
   const [team1, setTeam1] = useState("");
   const [goalsTeam1, setGoalsTeam1] = useState("");
   const [team2, setTeam2] = useState("");
   const [goalsTeam2, setGoalsTeam2] = useState("");
   const [stadium, setStadium] = useState("");
   const [gameDate, setGameDate] = useState("");
-  // const allTeams = async () => await getTeams(2022);
-  // allTeams().then((resp) => {});
+  const [winner, setWinner] = useState("");
+  const [fase, setFase] = useState("");
 
-  const handleSubmit = () => {
-    if (team1 && team2 && goalsTeam1 && goalsTeam2) {
+  const fases = [
+    "Grupos",
+    "Oitavas",
+    "Quartas",
+    "Semis",
+    "Final",
+    "Ter. Lugar",
+  ];
+
+  const handleSubmit = async () => {
+    const { edition } = router.query as any;
+    const [year] = edition?.split("-");
+    if (goalsTeam1 > goalsTeam2) {
+      setWinner(team1);
+    } else if (goalsTeam1 < goalsTeam2) {
+      setWinner(team2);
+    }
+
+    if (team1 && team2 && goalsTeam1 && goalsTeam2 && stadium && gameDate) {
+      const { comissaoTecnicaDaEdicao } = await createMatch({
+        ano: year,
+        equipe1: team1,
+        equipe2: team2,
+        fase: fase,
+        vencedor: winner,
+        golsEquipe1: Number(goalsTeam1),
+        golsEquipe2: Number(goalsTeam2),
+        nomeEstadio: stadium,
+        dataJogo: new Date(gameDate),
+      });
+      const formattedMatch = formatMatch(comissaoTecnicaDaEdicao);
+      updateMatches(formattedMatch);
     }
   };
 
@@ -112,6 +145,21 @@ const AddMatchForm = ({ teams }: PageProps) => {
               onChange={(e) => setGameDate(e.target.value)}
             />
           </VStack>
+          <VStack>
+            <FormLabel htmlFor='fase'>Fase</FormLabel>
+            <Select
+              id='fase'
+              value={fase}
+              onChange={(e) => setFase(e.target.value)}
+              w='241px'
+            >
+              {fases?.map((fase) => (
+                <option key={fase} value={fase}>
+                  {fase}
+                </option>
+              ))}
+            </Select>
+          </VStack>
         </HStack>
         <Button colorScheme='teal' type='submit' onClick={handleSubmit}>
           Submit
@@ -123,23 +171,18 @@ const AddMatchForm = ({ teams }: PageProps) => {
 
 export default AddMatchForm;
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  // const { edition } = params as unknown as ServerSideProps;
-  // console.log(edition);
-  // const [year, country] = edition.split("-");
-  // console.log(year);
-
-  const allTeams = await getTeams(2022);
-  const teams = formatTeams(allTeams);
-
-  return {
-    props: {
-      teams,
-    },
-  };
-};
-
-const formatTeams = (teams: Team[]) => {
-  const formatedTeams = teams.map<string>((team) => team.pais);
-  return formatedTeams;
-};
+export function formatMatch(match: MatchInfo[]): Matches[] {
+  return match.map((match) => {
+    return {
+      year: match.ano,
+      fase: match.fase,
+      team1: match.equipe1,
+      team2: match.equipe2,
+      winner: match.vencedor,
+      goalsTeam1: match.golsEquipe1,
+      goalsTeam2: match.golsEquipe2,
+      stadium: match.nomeEstadio,
+      gameDate: match.dataJogo,
+    };
+  });
+}
