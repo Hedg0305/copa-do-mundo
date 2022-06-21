@@ -33,7 +33,7 @@ const Matches = ({ year, matches }: PageProps) => {
           <Grid gridTemplateColumns='repeat(2, 1fr)' gap='20px'>
             {matches.map((match, index) => (
               <Match
-                gameDate={match.gameDate}
+                gameDate={new Date(match.gameDate)}
                 goalsTeam1={match.goalsTeam1}
                 goalsTeam2={match.goalsTeam2}
                 stadium={match.stadium}
