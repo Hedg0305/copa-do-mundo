@@ -88,23 +88,27 @@ const Competition = ({
           <Grid templateColumns='repeat(2, 1fr)' gap='35px'>
             {goleirosList?.map((player) => (
               <Player
-                key={player.name + player.birthdate}
+                id={player.id}
+                key={player.id}
                 birthdate={player.birthdate}
                 name={player.name}
                 age={player.age}
                 position={player.position}
                 stats={player.stats}
+                upDatePlayers={upDatePlayers}
               />
             ))}
 
             {linhaList?.map((player) => (
               <Player
-                key={player.name + player.birthdate}
+                id={player.id}
+                key={player.id}
                 birthdate={player.birthdate}
                 name={player.name}
                 age={player.age}
                 position={player.position}
                 stats={player.stats}
+                upDatePlayers={upDatePlayers}
               />
             ))}
           </Grid>
@@ -169,6 +173,7 @@ export function formatComittee(comittee: ComicaoInfo[]): ComitteeProps[] {
 const formatPlayers = (jogadores: JogadorInfo[]): PlayerProps[] => {
   return jogadores.map((jogador) => {
     return {
+      id: jogador.id,
       birthdate: jogador.dataNascimento,
       name: jogador.nome,
       age: jogador.idade,

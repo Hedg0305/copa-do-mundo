@@ -1,7 +1,10 @@
+import { CloseIcon } from "@chakra-ui/icons";
 import { Avatar, Box, Heading, List, ListItem } from "@chakra-ui/react";
 import React from "react";
+import { deletePlayer } from "../../api/jogador";
 
 export interface PlayerProps {
+  id: number;
   birthdate: Date;
   name: string;
   age: number;
@@ -14,9 +17,20 @@ export interface PlayerProps {
     yellowCards: number | null;
     redCards: number;
   };
+  upDatePlayers?: () => void;
 }
 
-const Player = ({ birthdate, name, age, position, stats }: PlayerProps) => {
+const Player = ({
+  birthdate,
+  name,
+  age,
+  position,
+  stats,
+  id,
+  upDatePlayers,
+}: PlayerProps) => {
+  const [mouseOver, setMouseOver] = React.useState(false);
+
   return (
     <Box
       p='15px'
@@ -29,7 +43,36 @@ const Player = ({ birthdate, name, age, position, stats }: PlayerProps) => {
       borderColor='gray.300'
     >
       <Box display='flex' alignItems='center' justifyContent='space-between'>
-        <Avatar name={name} />
+        <Box
+          onMouseEnter={() => setMouseOver(true)}
+          onMouseLeave={() => setMouseOver(false)}
+        >
+          {!mouseOver ? (
+            <Avatar
+              name={name}
+              _hover={{
+                opacity: 0,
+              }}
+              transition='opacity 0.2s ease-out'
+            />
+          ) : (
+            <CloseIcon
+              w='48px'
+              h='48px'
+              d='flex'
+              opacity='0'
+              _hover={{
+                opacity: 1,
+              }}
+              transition='opacity 0.2s ease-in'
+              onClick={() => {
+                deletePlayer(id, position ?? "GOL").then(() => {
+                  upDatePlayers && upDatePlayers();
+                });
+              }}
+            />
+          )}
+        </Box>
         <Box
           fontWeight='Bold'
           as='h2'

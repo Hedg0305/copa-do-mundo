@@ -78,3 +78,12 @@ export const createPlayer = async ({
       });
 };
 
+export const deletePlayer = async (id: number, position: string) => {
+  console.log(position);
+  console.log(id);
+
+  position !== "GOL"
+    ? await API.delete(`/jogadores-linha/${id}`)
+    : await API.delete(`/goleiros/${id}`);
+};
+
