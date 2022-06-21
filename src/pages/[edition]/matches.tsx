@@ -1,14 +1,17 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { Box, Center, Grid, Heading, VStack } from "@chakra-ui/react";
-import Match from "../../components/Match";
 import AddMatchForm from "../../components/AddMatchForm";
+import { getTeams, Team } from "../../api/team";
+import { getMatches, MatchInfo } from "../../api/match";
+import Match, { MatchProps } from "../../components/Match";
 interface ServerSideProps {
   edition: string;
 }
 
 interface PageProps {
   year: string;
+  teams: string[];
   matches: Matches[];
 }
 
@@ -20,20 +23,20 @@ interface Matches {
   goalsTeam1: number;
   goalsTeam2: number;
   winner: string;
-  gameDate: string;
+  gameDate: Date;
 }
 
-const Matches = ({ year, matches }: PageProps) => {
+const Matches = ({ year, teams, matches }: PageProps) => {
   return (
-    <Box h='100%' p='20px 0 20px 0'>
+    <Box h='100vh'>
       <Center>
         <VStack>
           <Heading as='h1' size='2xl' mb='10'>
             Partidas - {year}
           </Heading>
-          <AddMatchForm />
+          <AddMatchForm teams={teams} />
           <Grid gridTemplateColumns='repeat(2, 1fr)' gap='20px'>
-            {matches.map((match, index) => (
+            {matches?.map((match, index) => (
               <Match
                 gameDate={match.gameDate}
                 goalsTeam1={match.goalsTeam1}
@@ -59,182 +62,38 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { edition } = params as unknown as ServerSideProps;
   const [year, country] = edition.split("-");
 
+  const allTeams = await getTeams(Number(year));
+  const allMatches = await getMatches(Number(year));
+  const matches = formatMatches(allMatches);
+  const teams = formatTeams(allTeams);
+
   return {
     props: {
       year,
+      teams,
       country,
-      matches: [
-        {
-          fase: "grupos",
-          stadium: "Santigao Bernabéu",
-          team1: "Alemanha",
-          team2: "Brasil",
-          goalsTeam1: 1,
-          goalsTeam2: 3,
-          winner: "Brasil",
-          gameDate: "05/09/2022",
-        },
-        {
-          fase: "quartas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "final",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "semis",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "semis",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "quartas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "quartas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "quartas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "oitavas",
-          stadium: "Camp Nou",
-          team1: "Holanda",
-          team2: "Inglaterra",
-          goalsTeam1: 2,
-          goalsTeam2: 2,
-          winner: "",
-          gameDate: "03/09/2022",
-        },
-        {
-          fase: "grupos",
-          stadium: "Allianz Park",
-          team1: "Portugal",
-          team2: "Espanha",
-          goalsTeam1: 2,
-          goalsTeam2: 1,
-          winner: "Portugal",
-          gameDate: "06/09/2022",
-        },
-      ],
+      matches,
     },
   };
 };
+
+const formatTeams = (teams: Team[]) => {
+  const formatedTeams = teams.map<string>((team) => team.pais);
+  return formatedTeams;
+};
+
+export function formatMatches(matches: MatchInfo[]): MatchProps[] {
+  return matches.map((match) => {
+    return {
+      year: match.ano,
+      fase: match.fase,
+      team1: match.equipe1,
+      team2: match.equipe2,
+      winner: match.vencedor,
+      goalsTeam1: match.golsEquipe1,
+      goalsTeam2: match.golsEquipe2,
+      stadium: match.nomeEstadio,
+      gameDate: match.dataJogo,
+    };
+  });
+}
