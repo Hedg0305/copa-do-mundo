@@ -7,6 +7,7 @@ import TechnicalComittee, {
 } from "../../../components/TechnicalComittee";
 import AddPersonForm from "../../../components/AddPersonForm";
 import { ComicaoInfo, getCommittee } from "../../../api/comittee";
+import { getPlayers, JogadorInfo } from "../../../api/jogador";
 
 interface ServerSideProps {
   edition: string;
@@ -18,8 +19,10 @@ interface PageProps {
   hostCountry: string;
   year: number;
   team: string;
-  players: PlayerProps[];
+  linha: PlayerProps[];
+  goleiros: PlayerProps[];
   technicalComittee: ComitteeProps[];
+  teamId: string;
 }
 
 export interface TeamInfo {
@@ -40,14 +43,27 @@ const Competition = ({
   year,
   team,
   technicalComittee,
-  players,
+  linha,
+  goleiros,
+  teamId,
 }: PageProps) => {
   const [technicalComitteeList, setTechnicalComitteeList] =
     useState<ComitteeProps[]>();
+  const [linhaList, setLinhaList] = useState<PlayerProps[]>();
+  const [goleirosList, setGoleirosList] = useState<PlayerProps[]>();
 
   useEffect(() => {
     setTechnicalComitteeList(technicalComittee);
-  }, [technicalComittee]);
+    setLinhaList(linha);
+    setGoleirosList(goleiros);
+  }, [technicalComittee, linha, goleiros]);
+
+  async function upDatePlayers() {
+    const { goleiros, jogadoresLinha } = await getPlayers(teamId, String(year));
+
+    setGoleirosList(formatPlayers(goleiros));
+    setLinhaList(formatPlayers(jogadoresLinha));
+  }
 
   return (
     <Box minH='100vh'>
@@ -61,16 +77,29 @@ const Competition = ({
             {team}
           </Heading>
 
-          <AddPersonForm upDateComittee={setTechnicalComitteeList} />
+          <AddPersonForm
+            upDateComittee={setTechnicalComitteeList}
+            upDatePlayers={upDatePlayers}
+          />
 
           <Heading as='h3' size='md'>
             Jogadores
           </Heading>
           <Grid templateColumns='repeat(2, 1fr)' gap='35px'>
-            {players.map((player) => (
+            {goleirosList?.map((player) => (
               <Player
-                key={player.passport}
-                passport={player.passport}
+                key={player.name + player.birthdate}
+                birthdate={player.birthdate}
+                name={player.name}
+                age={player.age}
+                position={player.position}
+                stats={player.stats}
+              />
+            ))}
+
+            {linhaList?.map((player) => (
+              <Player
+                key={player.name + player.birthdate}
                 birthdate={player.birthdate}
                 name={player.name}
                 age={player.age}
@@ -108,40 +137,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const comittee = await getCommittee(teamId, year);
   const formattedComittee = formatComittee(comittee);
 
+  const { goleiros, jogadoresLinha } = await getPlayers(teamId, year);
+
+  const linha = formatPlayers(jogadoresLinha);
+  const goleirosFormatted = formatPlayers(goleiros);
+
   return {
     props: {
       year,
       hostCountry,
       team,
       technicalComittee: formattedComittee,
-      players: [
-        {
-          passport: "231654564",
-          birthdate: "12/12/1995",
-          name: "Lionel Messi",
-          age: 34,
-          position: "PE",
-          stats: {
-            goals: 13,
-            assists: 5,
-            yellowCards: 1,
-            redCards: 0,
-          },
-        },
-        {
-          passport: "32132131",
-          birthdate: "12/12/1999",
-          name: "Emiliano Martinez",
-          age: 29,
-          position: "GOL",
-          stats: {
-            defenses: 34,
-            sufferedGoals: 5,
-            yellowCards: 0,
-            redCards: 0,
-          },
-        },
-      ],
+      linha,
+      goleiros: goleirosFormatted,
+      teamId,
     },
   };
 };
@@ -156,4 +165,23 @@ export function formatComittee(comittee: ComicaoInfo[]): ComitteeProps[] {
     };
   });
 }
+
+const formatPlayers = (jogadores: JogadorInfo[]): PlayerProps[] => {
+  return jogadores.map((jogador) => {
+    return {
+      birthdate: jogador.dataNascimento,
+      name: jogador.nome,
+      age: jogador.idade,
+      position: jogador?.posicao ?? "GOL",
+      stats: {
+        goals: jogador?.gols ?? null,
+        assists: jogador?.assistencias ?? null,
+        sufferedGoals: jogador?.golsSofridos ?? null,
+        defenses: jogador?.defesas ?? null,
+        yellowCards: jogador?.cartoesAmarelos ?? null,
+        redCards: jogador?.cartoesVermelhos ?? null,
+      },
+    };
+  });
+};
 

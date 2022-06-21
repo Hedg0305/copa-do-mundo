@@ -1,59 +1,80 @@
 import { API } from ".";
 
 export interface JogadorInfo {
+  id: number;
+  equipeId: number;
+  passaporte: number;
   nome: string;
   idade: number;
-  dataNascimento: string;
-  posicao: string;
+  dataNascimento: Date;
+  defesas?: number;
+  golsSofridos?: number;
+  gols?: number;
+  posicao?: string;
+  assistencias?: number;
+  cartoesAmarelos: number;
+  cartoesVermelhos: number;
+  ano: number;
 }
 
-interface CreateJogador {
+interface CreatePlayer {
   nome: string;
   dataNascimento: Date;
   passaporte: string;
   posicao: string;
-  idade: number;
-  equipe: string;
   ano: 2020;
+  equipeId: string;
 }
 
-// interface CreateCommitteeResponse {
-//   goleiro: ComicaoInfo[];
-//   goleirosDaEdicao: ComicaoInfo[];
-// }
+interface GetJogadoresResponse {
+  goleiros: JogadorInfo[];
+  jogadoresLinha: JogadorInfo[];
+}
 
-export const getPlayer = async (
-  equipeID: string,
-  ano: string,
-  posicao: string
-) => {
-  const { data } = await API.get(
-    `/comissao-tecnica?equipeID=${equipeID}&ano=${ano}`
+export const getPlayers = async (equipeID: string, ano: string) => {
+  const { data: goleiros } = await API.get(
+    `/goleiros?equipeID=${equipeID}&ano=${ano}`
   );
-  return data;
+  const { data: jogadoresLinha } = await API.get(
+    `/jogadores-linha?equipeID=${equipeID}&ano=${ano}`
+  );
+  //add an object call goleiros to jogadores
+  const jogadores = {
+    goleiros,
+    jogadoresLinha,
+  };
+
+  return jogadores as GetJogadoresResponse;
 };
 
-// export const createComittee = async ({
-//   ano,
-//   nome,
-//   dataNascimento,
-//   passaporte,
-//   funcao,
-//   idade,
-//   equipe,
-// }: CreateComitte) => {
-//   const { data } = await API.post(
-//     "/comissao-tecnica",
-//     {
-//       ano,
-//       nome,
-//       dataNascimento,
-//       passaporte,
-//       funcao,
-//       idade,
-//       equipe,
-//     }
-//   );
+export const createPlayer = async ({
+  ano,
+  nome,
+  dataNascimento,
+  passaporte,
+  posicao,
+  equipeId,
+}: CreatePlayer) => {
+  // calculate idade
+  const idade = new Date().getFullYear() - dataNascimento.getFullYear();
 
-//   return data;
-// };
+  posicao !== "GOL"
+    ? await API.post("/jogadores-linha", {
+        ano: Number(ano),
+        nome,
+        dataNascimento,
+        passaporte,
+        posicao,
+        idade,
+        equipe: equipeId,
+      })
+    : await API.post("/goleiros", {
+        ano: Number(ano),
+        nome,
+        dataNascimento,
+        passaporte,
+        idade,
+        equipe: equipeId,
+      });
+};
+

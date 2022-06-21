@@ -176,14 +176,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       year,
-      country,
+      country: country || null,
       groups,
       countryOptions: formatOptions,
     },
   };
 };
 
-const formatTeams = (teams: Team[]) => {
+export const formatTeams = (teams: Team[]) => {
   const formatedTeams = teams.map<TeamInfo>((team) => ({
     country: team.pais,
     id: team.id,
@@ -211,3 +211,4 @@ const formatTeams = (teams: Team[]) => {
 
   return separatedGroups;
 };
+

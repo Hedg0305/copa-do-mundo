@@ -18,9 +18,13 @@ import PlayerForm from "./PlayerForm";
 
 interface AddPersonFormProps {
   upDateComittee: (comittee: ComitteeProps[]) => void;
+  upDatePlayers: () => void;
 }
 
-const AddPersonForm = ({ upDateComittee }: AddPersonFormProps) => {
+const AddPersonForm = ({
+  upDateComittee,
+  upDatePlayers,
+}: AddPersonFormProps) => {
   return (
     <Tabs isFitted variant='solid-rounded'>
       <TabList mb='1em'>
@@ -32,7 +36,7 @@ const AddPersonForm = ({ upDateComittee }: AddPersonFormProps) => {
           <ComitteeForm upDateComittee={upDateComittee} />
         </TabPanel>
         <TabPanel>
-          <PlayerForm />
+          <PlayerForm upDatePlayers={upDatePlayers} />
         </TabPanel>
       </TabPanels>
     </Tabs>
